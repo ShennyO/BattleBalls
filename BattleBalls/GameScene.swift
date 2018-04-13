@@ -25,10 +25,12 @@ class GameScene: SKScene {
     let minDistance:CGFloat = 25
     let minSpeed:CGFloat = 200
     let maxSpeed:CGFloat = 6000
+    var distance: CGFloat!
     
     override func didMove(to view: SKView) {
         blue = self.childNode(withName: "blue") as! SKSpriteNode
         red = self.childNode(withName: "red") as! SKSpriteNode
+        distance = self.size.height - blue.size.height
     }
     
     
@@ -101,32 +103,47 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+     
     }
     
     func swipedRight(side: side) {
+        let moveRight = SKAction.moveBy(x: self.size.width/3, y: 0, duration: 0.1)
         switch side {
         case .top:
-            blue.position.x += self.size.width/3
+            blue.run(moveRight)
         case .bottom:
-            red.position.x += self.size.width/3
+            red.run(moveRight)
         }
     }
     
     func swipedUp(side: side) {
-        
+        let moveUp = SKAction.moveBy(x: 0, y: distance/3, duration: 0.1)
+        switch side {
+        case .top:
+            blue.run(moveUp)
+        case .bottom:
+            red.run(moveUp)
+        }
     }
     
     func swipedLeft(side: side) {
+        let moveLeft = SKAction.moveBy(x: -self.size.width/3, y: 0, duration: 0.1)
         switch side {
         case .top:
-            blue.position.x -= self.size.width/3
+            blue.run(moveLeft)
         case .bottom:
-            red.position.x -= self.size.width/3
+            red.run(moveLeft)
         }
     }
     
     func swipedDown(side: side) {
-        
+        let moveDown = SKAction.moveBy(x: 0, y: -distance/3, duration: 0.1)
+        switch side {
+        case .top:
+            blue.run(moveDown)
+        case .bottom:
+            red.run(moveDown)
+        }
     }
     
     
