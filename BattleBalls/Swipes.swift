@@ -11,21 +11,52 @@ import SpriteKit
 import GameplayKit
 
 extension GameScene {
-//    func configSwipes(view: SKView) {
-//        let swipeRight: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(self.swipedRight))
-//        swipeRight.direction = .right
-//        let swipeUp: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(self.swipedRight))
-//        swipeUp.direction = .up
-//        let swipeLeft: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(self.swipedRight))
-//        swipeLeft.direction = .left
-//        let swipeDown: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(self.swipedRight))
-//        swipeDown.direction = .down
     
-//        
-//        view.addGestureRecognizer(swipeRight)
-//        view.addGestureRecognizer(swipeUp)
-//        view.addGestureRecognizer(swipeLeft)
-//        view.addGestureRecognizer(swipeDown)
-//        
-//    }
+    func swipedRight(side: side) {
+        let moveRight = SKAction.moveBy(x: self.size.width/3, y: 0, duration: 0.150)
+        switch side {
+        case .top:
+            blueVelocity += 1
+            blue.run(moveRight)
+        case .bottom:
+            redVelocity += 1
+            red.run(moveRight)
+        }
+    }
+    
+    func swipedUp(side: side) {
+        let moveUp = SKAction.moveBy(x: 0, y: distance/3, duration: 0.225)
+        switch side {
+        case .top:
+            blueVelocity += 1
+            blue.run(moveUp)
+        case .bottom:
+            redVelocity += 1
+            red.run(moveUp)
+        }
+    }
+    
+    func swipedLeft(side: side) {
+        let moveLeft = SKAction.moveBy(x: -self.size.width/3, y: 0, duration: 0.150)
+        switch side {
+        case .top:
+            blueVelocity += 1
+            blue.run(moveLeft)
+        case .bottom:
+            redVelocity += 1
+            red.run(moveLeft)
+        }
+    }
+    
+    func swipedDown(side: side) {
+        let moveDown = SKAction.moveBy(x: 0, y: -distance/3, duration: 0.225)
+        switch side {
+        case .top:
+            blueVelocity += 1
+            blue.run(moveDown)
+        case .bottom:
+            redVelocity += 1
+            red.run(moveDown)
+        }
+    }
 }

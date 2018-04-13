@@ -14,23 +14,26 @@ enum side {
     case bottom
 }
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var blue: SKSpriteNode!
     var red: SKSpriteNode!
     
-    var start:(location:CGPoint, time:TimeInterval)?
     var bottomTouchLocation: CGPoint? = nil
     var topTouchLocation: CGPoint? = nil
     let minDistance:CGFloat = 25
-    let minSpeed:CGFloat = 200
-    let maxSpeed:CGFloat = 6000
     var distance: CGFloat!
+    var hittable = true
+    var blueVelocity: CGFloat = 0
+    var redVelocity: CGFloat = 0
+    
+    
     
     override func didMove(to view: SKView) {
         blue = self.childNode(withName: "blue") as! SKSpriteNode
         red = self.childNode(withName: "red") as! SKSpriteNode
         distance = self.size.height - blue.size.height
+        physicsWorld.contactDelegate = self
     }
     
     
@@ -76,6 +79,15 @@ class GameScene: SKScene {
         }
     }
     
+    func updateVelocties() {
+        if blueVelocity > 3 {
+            blueVelocity = 0
+        }
+        if redVelocity > 3 {
+            redVelocity = 0
+        }
+    }
+    
     
     func calculateSwipe(side: side, firstTouch: CGPoint, lastTouch: CGPoint) {
         //        print("Calculating swipe on the \(side) side with location1: \(firstTouch) and location2: \(lastTouch)")
@@ -96,55 +108,60 @@ class GameScene: SKScene {
         }
     }
     
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    func didBegin(_ contact: SKPhysicsContact) {
+        /* Get references to bodies involved in collision */
+        let contactA = contact.bodyA
+        let contactB = contact.bodyB
         
+        /* Get references to the physics body parent nodes */
+        let nodeA = contactA.node!
+        let nodeB = contactB.node!
+        
+        /* Did our hero pass through the 'goal'? */
+        if nodeA.name == "blueTopBorder" || nodeB.name == "blueTopBorder" {
+            if hittable {
+                print("Blue top collided")
+                hittable = false
+                let moveDown = SKAction.moveBy(x: 0, y: -50, duration: 0.025)
+                blue.run(moveDown)
+                hittable = true
+            }
+           
+            
+        } else if nodeA.name == "blueRightBorder" || nodeB.name == "blueRightBorder" {
+            if hittable {
+            print("Blue Right collided")
+                hittable = false
+                let moveLeft = SKAction.moveBy(x: -50, y: 0, duration: 0.025)
+                blue.run(moveLeft)
+                hittable = true
+            }
+            
+        } else if nodeA.name == "blueBottomBorder" || nodeB.name == "blueBottomBorder" {
+            if hittable {
+            print("Blue Bottom collided")
+                hittable = false
+                let moveUp = SKAction.moveBy(x: 0, y: 50, duration: 0.025)
+                blue.run(moveUp)
+                hittable = true
+            }
+            
+        } else if nodeA.name == "blueLeftBorder" || nodeB.name == "blueLeftBorder" {
+            if hittable {
+            print("Blue left collided")
+                hittable = false
+                let moveRight = SKAction.moveBy(x: 50, y: 0, duration: 0.025)
+                blue.run(moveRight)
+                hittable = true
+            }
+        }
     }
-    
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
      
     }
-    
-    func swipedRight(side: side) {
-        let moveRight = SKAction.moveBy(x: self.size.width/3, y: 0, duration: 0.1)
-        switch side {
-        case .top:
-            blue.run(moveRight)
-        case .bottom:
-            red.run(moveRight)
-        }
-    }
-    
-    func swipedUp(side: side) {
-        let moveUp = SKAction.moveBy(x: 0, y: distance/3, duration: 0.1)
-        switch side {
-        case .top:
-            blue.run(moveUp)
-        case .bottom:
-            red.run(moveUp)
-        }
-    }
-    
-    func swipedLeft(side: side) {
-        let moveLeft = SKAction.moveBy(x: -self.size.width/3, y: 0, duration: 0.1)
-        switch side {
-        case .top:
-            blue.run(moveLeft)
-        case .bottom:
-            red.run(moveLeft)
-        }
-    }
-    
-    func swipedDown(side: side) {
-        let moveDown = SKAction.moveBy(x: 0, y: -distance/3, duration: 0.1)
-        switch side {
-        case .top:
-            blue.run(moveDown)
-        case .bottom:
-            red.run(moveDown)
-        }
-    }
+   
     
     
 }
