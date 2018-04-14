@@ -28,6 +28,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var hittable = true
     var blueVelocity: Int = 0
     var redVelocity: Int = 0
+
     
     
     
@@ -84,6 +85,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    
     
     func updateVelocties() {
         
@@ -198,9 +200,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func checkEdges() {
+        if blue.position.x <= 0 + blue.size.width/2 {
+            blue.position.x = 0 + blue.size.width/2
+        } else if blue.position.x >= self.size.width - blue.size.width/2 {
+            blue.position.x = self.size.width - blue.size.width/2
+        }
+        
+        if blue.position.y <= 0 + blue.size.height/2 {
+            blue.position.y = blue.size.height/2
+        } else if blue.position.y >= self.size.height - blue.size.height/2 {
+            blue.position.y = self.size.height - blue.size.height/2
+        }
+        
+        if red.position.y <= 0 + red.size.height/2 {
+            red.position.y = red.size.height/2
+        } else if red.position.y >= self.size.height - red.size.height/2 {
+            red.position.y = self.size.height - red.size.height/2
+        }
+        
+        if red.position.x <= 0 + red.size.width/2 {
+            red.position.x = 0 + red.size.width/2
+        } else if red.position.x >= self.size.width - red.size.width/2 {
+            red.position.x = self.size.width - red.size.width/2
+        }
+        
+    }
+    
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
      updateVelocties()
+     checkEdges()
     }
    
     
