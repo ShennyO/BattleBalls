@@ -35,6 +35,7 @@ extension GameScene {
             red.run(moveUp)
         }
     }
+
     
     func swipedLeft(side: side) {
         let moveLeft = SKAction.moveBy(x: -self.size.width/3, y: 0, duration: 0.150)
